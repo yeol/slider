@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="Copyright" content="yeol">
+    <meta name="Description" content="">
+    <title>倒计时</title>
+    <style type="text/css">
+        .timer {
+            width: 550px;
+            height: 160px;
+            line-height: 160px;
+            margin: 200px auto 20px auto;
+            background: #000;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            text-align: center;
+        }
+        p {text-align: center;}
+    </style>
+</head>
+<body>
+    <div class="timer" id="timer"></div>
+    <p>p.s. 时间写死了，请查看源代码吧，(ღ˘⌣˘ღ) ♫･*:.｡. .｡.:*･</p>
+</body>
+<script type="text/javascript">
+    var calTimeFunc = function(opt) {
+        if (!opt || !opt.starttime || !opt.endtime || !opt.btn) {return;}
+        var starttime = opt.starttime,
+            endtime = opt.endtime,
+            btn = opt.btn;
+        var time = endtime - starttime;
+        //展示部分
+        var showTime = function(day, hour, min, sec) {
+            var str = [
+                '倒计时：',
+                day > 0 ? (day + '天  ') : '',
+                hour < 10 ? ('0' + hour) : hour,
+                ':',
+                min < 10 ? ('0' + min) : min,
+                ':',
+                sec < 10 ? ('0' + sec) : sec
+            ].join('');
+            btn.innerHTML = str;
+        };
+
+        var d = parseInt(time / 3600 / 24) > 0 ? parseInt(time / 3600 / 24) : 0;
+        var h = parseInt((time / 3600)%24) > 0 ? parseInt((time / 3600)%24) : 0; 
+        var m = parseInt((time / 60)%60) > 0 ? parseInt((time / 60)%60) : 0; 
+        var s = parseInt(time % 60);
+        
+        showTime(d, h, m, s); 
+        var timeInterval = setInterval(function () {  
+            if (h == 0 && m == 0 && s == 1) {
+                //目前只倒计时时分秒部分 
+                clearInterval(timeInterval);
+                return; 
+            }  
+            if (s == 0) { 
+                s = 60; 
+                if (m == 0 && h > 0) {  
+                    h -= 1;  
+                    m = 60;   
+                } 
+                m -= 1;
+            }  
+            s -= 1; 
+            showTime(d, h, m, s);
+        }, 1000);
+        
+    };
+    calTimeFunc({
+        endtime : 1428814990, //倒计时结束的时间点
+        starttime : 1426100580,  //倒计时开始的时间点
+        btn : document.getElementById('timer') 
+    });
+</script>
+</html>
